@@ -1,5 +1,6 @@
 import {Aurelia} from 'aurelia-framework'
 import environment from './environment';
+import * as Firebase from 'firebase';
 
 //Configure Bluebird Promises.
 //Note: You may want to use environment-specific configuration.
@@ -31,7 +32,7 @@ export function configure(aurelia: Aurelia) {
         storageBucket: "jogger-8f982.appspot.com",
         messagingSenderId: "304130820150"
     };
-    //firebase.initializeApp(config);
+    Firebase.initializeApp(config);
     aurelia.setRoot();
   });
 }
