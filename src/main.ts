@@ -1,6 +1,7 @@
 import {Aurelia} from 'aurelia-framework'
 import environment from './environment';
 import * as Firebase from 'firebase';
+import 'bootstrap';
 
 //Configure Bluebird Promises.
 //Note: You may want to use environment-specific configuration.
