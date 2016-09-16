@@ -29,8 +29,8 @@
     "source": "src\\**\\*.css"
   },
   "editor": {
-    "id": "vscode",
-    "displayName": "Visual Studio Code"
+    "id": "atom",
+    "displayName": "Atom"
   },
   "unitTestRunner": {
     "id": "karma",
@@ -132,7 +132,21 @@
             "main": "aurelia-testing",
             "env": "dev"
           },
-          "nprogress"
+          {
+            "name": "nprogress",
+            "path": "../node_modules/nprogress",
+            "main":"nprogress"
+          },
+          {
+            "name": "firebase",
+            "path": "../node_modules/firebase",
+            "main":"firebase"
+          },
+          {
+            "name": "moment",
+            "path": "../node_modules/moment",
+            "main":"moment"
+          }
         ]
       }
     ]
