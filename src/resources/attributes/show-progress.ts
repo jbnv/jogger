@@ -1,5 +1,5 @@
 // import {inject, customAttribute} from 'aurelia-framework';
-import NProgress from 'nprogress';
+//import NProgress from 'nprogress';
 
 // @customAttribute('show-progress')
 // @inject(Element)
@@ -11,9 +11,9 @@ export class ShowProgress {
 
   valueChanged(newValue) {
     if (newValue) {
-      NProgress.start();
+      // NProgress.start();
     } else {
-      NProgress.done();
+      // NProgress.done();
     }
   }
 }
