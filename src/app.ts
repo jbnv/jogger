@@ -1,7 +1,7 @@
 //import 'nprogress';
 import {inject} from 'aurelia-framework';
 import {Redirect} from 'aurelia-router';
-import {AuthenticationManager, Configuration as FirebaseConfiguration} from './resources/firebase/index';
+import {AuthenticationManager, Configuration as FirebaseConfiguration, currentUser} from './resources/firebase/index';
 
 export class App {
 
@@ -58,9 +58,9 @@ class AuthorizeStep {
     // Then check if the current authenticated user is valid
     console.log("AuthorizeStep.run",this.authManager);
     if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
-      let currentUser = this.authManager.currentUser();
-      if (!this.authManager || !currentUser) {
-        console.log("No user authenticated. Redirect to login.",this.fbConfig,currentUser);
+      let user = currentUser();
+      if (!this.authManager || !user) {
+        console.log("No user authenticated. Redirect to login.",this.fbConfig,user);
         return next.cancel(new Redirect(this.fbConfig.getLoginRoute()));
       }
     }
