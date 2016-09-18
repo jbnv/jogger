@@ -1,5 +1,6 @@
 import {inject} from 'aurelia-dependency-injection';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {User} from './user';
 
 class FirebaseEvent {
   handled = false;
@@ -22,7 +23,7 @@ class UserEvent extends FirebaseEvent {
  */
 export class UserCreatedEvent extends UserEvent {
   email:string;
-  constructor(data: any) {
+  constructor(data: User) {
     super(data.uid);
     this.email = data.email;
   }
@@ -36,7 +37,7 @@ export class UserSignedInEvent extends UserEvent {
   email: string;
   profileImageUrl:string;
 
-  constructor(data: any) {
+  constructor(data: User) {
     super(data.uid);
     this.provider = data.provider;
     this.email = data.email;
@@ -48,7 +49,7 @@ export class UserSignedInEvent extends UserEvent {
  */
 export class UserSignedOutEvent extends UserEvent {
   email: string;
-  constructor(data: any) {
+  constructor(data: User) {
     super();
     this.email = data.email;
   }
@@ -97,8 +98,8 @@ export class UserAuthStateChangedEvent extends UserEvent {
   auth: any;
   expires: number;
 
-  constructor(data: any) {
-    data = data || {};
+  constructor(data: User) {
+    data = data || new User();
     super(data.uid);
     this.provider = data.provider || null;
     this.auth = data.auth || null;
