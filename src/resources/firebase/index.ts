@@ -49,3 +49,11 @@ export class FirebaseModule {
     this.message = message;
   }
 }
+
+export class FirebaseEntityModule<T> extends FirebaseModule {
+  item: T;
+
+  reset() {
+    this.item = null;
+  }
+}

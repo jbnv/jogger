@@ -1,6 +1,6 @@
 import 'moment';
 import {inject, computedFrom} from 'aurelia-framework';
-import {ReactiveCollection, AuthenticationManager} from '../resources/firebase/index';
+import {ReactiveCollection, AuthenticationManager, currentUser} from '../resources/firebase/index';
 import {Jog} from '../entities/jog';
 
 @inject(AuthenticationManager)
@@ -9,7 +9,7 @@ export class JogCollection extends ReactiveCollection {
 
   constructor(authManager:AuthenticationManager) {
     super(['jogs']);
-    this._user = authManager.currentUser;
+    this._user = currentUser();
   }
 
   @computedFrom('items')
