@@ -1,21 +1,29 @@
-import {inject, customElement} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
-//import {AuthenticationManager, User} from 'aurelia-firebase';
+import {customElement} from 'aurelia-framework';
+import {FirebaseModule, inject, AuthenticationManager, Router} from '../firebase/index';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
+@inject(AuthenticationManager, Router,EventAggregator)
 @customElement('identity')
-//@inject(AuthenticationManager, Router)
-export class Identity {
+export class Identity extends FirebaseModule {
 
-  // constructor(authManager: AuthenticationManager, router: Router) {
-  //   this.authManager = authManager;
-  //   /*eslint no-unused-vars:0*/
-  //   this.user = authManager.currentUser;
-  //   this.router = router;
-  // }
+  user = null;
+
+  constructor(
+    authManager:AuthenticationManager,
+    router:Router,
+    eventAggregator: EventAggregator
+  ) {
+    super(authManager,router,eventAggregator);
+    eventAggregator.subscribe('user-signin',(user) => {
+      this.user = user;
+    });
+  }
 
   signOut() {
-    // this.authManager.signOut().then(() => {
-    //   this.router.navigateToRoute('home');
-    //});
+    this.authManager.signOut().then(() => {
+      this.user = null;
+      this.router.navigateToRoute('home');
+    });
   }
+
 }
