@@ -1,42 +1,32 @@
-import {inject} from 'aurelia-framework';
-import {AuthenticationManager} from 'aurelia-firebase';
+import {FirebaseModule} from '../resources/firebase/index';
 
-@inject(AuthenticationManager)
-export class AccountEditPassword {
-  authManager = null;
+export class AccountEditPassword extends FirebaseModule {
   oldPassword = null;
   newPassword = null;
   confirmNewPassword = null;
-  message = null;
-  error = null;
-
-  constructor(authManager) {
-    this.authManager = authManager;
-  }
 
   edit() {
     if (!this.newPassword) {
-      this.error = 'New password is required';
+      this.setStateError('New password is required.');
       return;
     }
 
     if (this.newPassword !== this.confirmNewPassword) {
-      this.error = 'Password confirmation is different';
+      this.setStateError('Password and confirmation do not match.');
       this.confirmNewPassword = null;
       return;
     }
 
     if (!this.oldPassword) {
-      this.error = 'Old password is required';
+      this.setStateError('Old password is required.');
       return;
     }
 
-    this.error = null;
-    this.message = null;
+    this.clearState();
     this.authManager.changePassword(this.authManager.currentUser.email, this.oldPassword, this.newPassword).then(() => {
-      this.message = 'Password changed!';
+      this.setStateInfo('Password changed!');
     }, (error) => {
-      this.error = error.message;
+      this.setStateError(error.message);
     }).then(() => {
       this.oldPassword = null;
       this.newPassword = null;
