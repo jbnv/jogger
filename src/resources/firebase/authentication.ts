@@ -1,31 +1,32 @@
 import * as Firebase from 'firebase';
 import {inject} from 'aurelia-dependency-injection';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
-import * as events from './events';
-import {User} from './user';
 import {Configuration} from './configuration';
+
+export function currentUser() {
+  return Firebase.auth().currentUser;
+}
 
 /**
  * Handles Firebase authentication features
  */
-@inject(Configuration, events.Publisher)
+@inject(Configuration,EventAggregator)
 export class AuthenticationManager {
 
   _firebase = null;
-  _publisher = null;
+  _events = null;
 
   /**
    * Initializes a new instance of the AuthenticationManager
    * @param {Configuration} configuration - The configuration to use
    * @param {Publisher} publisher - The publisher used to broadcast system wide user events
    */
-  constructor(
-    configuration: Configuration,
-    publisher: events.Publisher)
+  constructor(configuration: Configuration, eventAggregator: EventAggregator)
   {
     console.log("AuthenticationManager.constructor");
     this._firebase = Firebase.database().ref();
-    this._publisher = publisher;
+    this._events = eventAggregator;
 
     // Register auth state changed event.
     // This will handle user data update now and in the future.
@@ -34,10 +35,6 @@ export class AuthenticationManager {
         this._onUserAuthStateChanged(result);
       }, this);
     }
-  }
-
-  currentUser() {
-    return Firebase.auth().currentUser;
   }
 
   /**
@@ -50,7 +47,7 @@ export class AuthenticationManager {
     console.log("AuthenticationManager.createUser");
     return Firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(result => {
-        this._publisher.publish(new events.UserCreatedEvent(result));
+        this._events.publish('user-created',result);
         return Firebase.auth().currentUser;
       })
   }
@@ -65,7 +62,7 @@ export class AuthenticationManager {
     console.log("AuthenticationManager.signIn");
     return Firebase.auth().signInWithEmailAndPassword(email, password)
       .then(result => {
-        this._publisher.publish(new events.UserSignedInEvent(result));
+        this._events.publish('user-signin',result);
         return Firebase.auth().currentUser;
       });
   }
@@ -87,8 +84,10 @@ export class AuthenticationManager {
    * @returns {Promise} - Returns a promise
    */
   signOut(): Firebase.Promise<any> {
-    console.log("AuthenticationManager.signOut");
-    return Firebase.auth().signOut();
+    return Firebase.auth().signOut().then(result => {
+      this._events.publish('user-signout',result);
+      return result;
+    });
   }
 
   /**
@@ -103,7 +102,7 @@ export class AuthenticationManager {
     var user = Firebase.auth().currentUser;
     return user.updateEmail(newEmail).then(function() {
       let result = { oldEmail: oldEmail, newEmail: newEmail };
-      this._publisher.publish(new events.UserEmailChangedEvent(result));
+      this._events.publish('user-email-changed',result);
       return result;
     });
   }
@@ -118,7 +117,7 @@ export class AuthenticationManager {
     var user = Firebase.auth().currentUser;
     return user.updatePassword(newPassword).then(function() {
       let result = { oldPassword: oldPassword, newPassword: newPassword };
-      this._publisher.publish(new events.UserPasswordChangedEvent(result));
+      this._events.publish('user-password',result);
       return result;
     });
   }
@@ -132,12 +131,12 @@ export class AuthenticationManager {
     var user = Firebase.auth().currentUser;
     return user.delete().then(function() {
       let result = { email: email };
-      this._publisher.publish(new events.UserDeletedEvent(result));
+      this._events.publish('user-deleted',result);
       return result;
     });
   }
 
   _onUserAuthStateChanged(authData) {
-    this._publisher.publish(new events.UserAuthStateChangedEvent(authData));
+    this._events.publish('user-auth-changed',authData);
   }
 }
