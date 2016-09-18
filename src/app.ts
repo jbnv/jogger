@@ -58,8 +58,9 @@ class AuthorizeStep {
     // Then check if the current authenticated user is valid
     console.log("AuthorizeStep.run",this.authManager);
     if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
-      if (!this.authManager || !this.authManager.currentUser || !this.authManager.currentUser.isAuthenticated) {
-        console.log("No user authenticated. Redirect to login.",this.fbConfig);
+      let currentUser = this.authManager.currentUser();
+      if (!this.authManager || !currentUser) {
+        console.log("No user authenticated. Redirect to login.",this.fbConfig,currentUser);
         return next.cancel(new Redirect(this.fbConfig.getLoginRoute()));
       }
     }

@@ -74,12 +74,13 @@ export class User {
    * @param userData {Object} An object containing the data
    */
   update(userData: any) {
+    console.log("User.update",userData);
     userData = userData || {};
-    this.uid = userData.uid || null;
-    this.provider = userData.provider || null;
-    this.token = userData.token || null;
-    this.auth = userData.auth || null;
-    this.expires = userData.expires || 0;
+    this.uid = userData.uid || this.uid || null;
+    this.provider = userData.provider || this.provider || null;
+    this.token = userData.token || this.token || null;
+    this.auth = userData.auth || this.auth || null;
+    this.expires = userData.expires || this.expires || 0;
 
     userData.password = userData.password || {};
     this.isTemporaryPassword = userData.password.isTemporaryPassword || false;

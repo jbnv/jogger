@@ -13,7 +13,6 @@ export class AuthenticationManager {
 
   _firebase = null;
   _publisher = null;
-  currentUser = null;
 
   /**
    * Initializes a new instance of the AuthenticationManager
@@ -27,15 +26,18 @@ export class AuthenticationManager {
     console.log("AuthenticationManager.constructor");
     this._firebase = Firebase.database().ref();
     this._publisher = publisher;
-    this.currentUser = new User();
 
-    // Register auth state changed event
+    // Register auth state changed event.
     // This will handle user data update now and in the future.
     if (configuration.getMonitorAuthChange() === true) {
       this._firebase.onAuth((result) => {
         this._onUserAuthStateChanged(result);
       }, this);
     }
+  }
+
+  currentUser() {
+    return Firebase.auth().currentUser;
   }
 
   /**
@@ -48,12 +50,9 @@ export class AuthenticationManager {
     console.log("AuthenticationManager.createUser");
     return Firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(result => {
-        let user = new User(result);
-        user.email = user.email || email; // Because firebase result doesn't provide the email
-        this._publisher.publish(new events.UserCreatedEvent(user));
-        console.log("createUser: user:",user);
-        return user;
-      });
+        this._publisher.publish(new events.UserCreatedEvent(result));
+        return Firebase.auth().currentUser;
+      })
   }
 
   /**
@@ -66,11 +65,8 @@ export class AuthenticationManager {
     console.log("AuthenticationManager.signIn");
     return Firebase.auth().signInWithEmailAndPassword(email, password)
       .then(result => {
-        let user = new User(result);
-        this.currentUser = user;
-        this._publisher.publish(new events.UserSignedInEvent(user));
-        console.log("signIn: user:",user);
-        return user;
+        this._publisher.publish(new events.UserSignedInEvent(result));
+        return Firebase.auth().currentUser;
       });
   }
 
@@ -92,10 +88,7 @@ export class AuthenticationManager {
    */
   signOut(): Firebase.Promise<any> {
     console.log("AuthenticationManager.signOut");
-    return Firebase.auth().signOut().then(function() {
-      this.currentUser.reset();
-      return {};
-    });
+    return Firebase.auth().signOut();
   }
 
   /**
@@ -112,8 +105,6 @@ export class AuthenticationManager {
       let result = { oldEmail: oldEmail, newEmail: newEmail };
       this._publisher.publish(new events.UserEmailChangedEvent(result));
       return result;
-    }, function(error) {
-      // An error happened.
     });
   }
 
@@ -129,8 +120,6 @@ export class AuthenticationManager {
       let result = { oldPassword: oldPassword, newPassword: newPassword };
       this._publisher.publish(new events.UserPasswordChangedEvent(result));
       return result;
-    }, function(error) {
-      // An error happened.
     });
   }
 
@@ -145,13 +134,10 @@ export class AuthenticationManager {
       let result = { email: email };
       this._publisher.publish(new events.UserDeletedEvent(result));
       return result;
-    }, function(error) {
-      // An error happened.
     });
   }
 
   _onUserAuthStateChanged(authData) {
-    this.currentUser.update(authData);
     this._publisher.publish(new events.UserAuthStateChangedEvent(authData));
   }
 }
