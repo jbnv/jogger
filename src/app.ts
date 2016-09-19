@@ -2,6 +2,7 @@
 import {inject} from 'aurelia-framework';
 import {Redirect} from 'aurelia-router';
 import {AuthenticationManager, Configuration as FirebaseConfiguration, currentUser} from './resources/firebase/index';
+import environment from './environment';
 
 export class App {
 
@@ -42,26 +43,22 @@ export class App {
   }
 }
 
-@inject(AuthenticationManager, FirebaseConfiguration)
+@inject(AuthenticationManager)
 class AuthorizeStep {
 
   authManager = null;
-  fbConfig = null;
 
-  constructor(authManager:AuthenticationManager, config:FirebaseConfiguration) {
+  constructor(authManager:AuthenticationManager) {
     this.authManager = authManager;
-    this.fbConfig = config;
   }
 
   run(navigationInstruction, next) {
     // Check if the route has an "auth" key
     // Then check if the current authenticated user is valid
-    console.log("AuthorizeStep.run",this.authManager);
     if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
       let user = currentUser();
       if (!this.authManager || !user) {
-        console.log("No user authenticated. Redirect to login.",this.fbConfig,user);
-        return next.cancel(new Redirect(this.fbConfig.getLoginRoute()));
+        return next.cancel(new Redirect(environment.loginRoute));
       }
     }
     return next();
