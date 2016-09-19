@@ -138,6 +138,11 @@
             "main":"nprogress"
           },
           {
+            "name": "numeral",
+            "path": "../node_modules/numeral",
+            "main":"numeral"
+          },
+          {
             "name": "firebase",
             "path": "../node_modules/firebase",
             "main":"firebase"
