@@ -13,7 +13,21 @@ export class App {
     config.title = 'Jogger';
     config.addPipelineStep('authorize', AuthorizeStep);
     config.map([
-      {route: ['', 'jog'], name: 'home', moduleId: 'jog/index', nav: true, title: 'Jogs'},
+      {
+        route: ['', 'jog'],
+        name: 'jogIndex',
+        moduleId: 'jog/index',
+        nav: true,
+        title: 'Jogs',
+        auth: true
+      },
+      {
+        route: ['jog/edit'],
+        name: 'jogEdit',
+        moduleId: 'jog/edit',
+        title: 'Add/Edit Jog',
+        auth: true
+      },
       {route: ['account/signin'], name: 'accountSignin', moduleId: 'account/signin', title: 'Sign in'},
       {route: ['account/signup'], name: 'accountSignup', moduleId: 'account/signup', title: 'Sign up'},
       {
