@@ -1,0 +1,26 @@
+<template>
+
+  <table class="table table-hover">
+
+    <tr>
+      <th>Date</th>
+      <th>Distance</th>
+      <th>Time</th>
+      <th>Avg.Speed</th>
+      <th></th>
+    </tr>
+
+    <tr repeat.for="jog of items">
+      <td>${jog.date}</td>
+      <td>${jog.distance}</td>
+      <td>${jog.time}</td>
+      <td>${jog.distance/jog.time}</td>
+      <td>
+        <button><i class="fa fa-pencil"></i></button>
+        <button><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>
+
+  </table>
+
+</template>

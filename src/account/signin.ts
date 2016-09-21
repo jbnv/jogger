@@ -10,7 +10,7 @@ export class SignIn extends FirebaseModule {
     this.authManager.signIn(this.email, this.password)
       .then(() => {
         console.log("Signin successful.");
-        this.router.navigateToRoute('accountIndex');
+        this.router.navigateToRoute('jogAdd');
       })
       .catch((e) => {
         console.log("Signin failed!",e);

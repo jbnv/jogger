@@ -1,3 +1,4 @@
+import * as Firebase from 'firebase';
 import {FirebaseModule} from '../resources/firebase/index';
 
 export class Account extends FirebaseModule {

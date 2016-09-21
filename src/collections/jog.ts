@@ -5,11 +5,9 @@ import {Jog} from '../entities/jog';
 
 @inject(AuthenticationManager)
 export class JogCollection extends ReactiveCollection {
-  _user = null;
 
   constructor(authManager:AuthenticationManager) {
-    super(['jogs']);
-    this._user = currentUser();
+    super('jogs');
   }
 
   @computedFrom('items')
@@ -26,18 +24,17 @@ export class JogCollection extends ReactiveCollection {
   }
 
   add(jog:Jog) {
-    if (!this._user || !this._user.isAuthenticated) {
+    let user = currentUser();
+    if (!user) {
       return Promise.reject({message: 'Authentication is required'});
     }
     if (!jog) {
       return Promise.reject({message: 'A Jog message is required'});
     }
 
-    return super.add({
-      ownerId: this._user.uid,
-      ownerProfileImageUrl: this._user.profileImageUrl,
-      jog: jog,
-      timestamp: Math.floor(Date.now() / 1000)
-    });
+    let outbound =  jog.clone();
+    outbound.ownerId = user.uid;
+    outbound.timestamp = Math.floor(Date.now() / 1000);
+    return super.add(outbound);
   }
 }

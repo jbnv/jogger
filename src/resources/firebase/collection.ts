@@ -8,29 +8,21 @@ export class ReactiveCollection {
   _valueMap = new Map();
   items = [];
 
-  constructor(path: Array<string>) {
+  constructor(path: string) {
     if (!Container || !Container.instance) throw Error('Container has not been made global');
     let config = Container.instance.get(Configuration);
     if (!config) throw Error('Configuration has not been set');
 
-    this._query = Firebase.database().ref();
+    this._query = Firebase.database().ref(path);
     this._listenToQuery(this._query);
   }
 
-  add(item:any) : Promise<Object> {
-    return new Promise((resolve, reject) => {
-      let query = this._query.ref().push();
-      query.set(item, (error) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(item);
-      });
-    });
+  add(item:any) : Firebase.Promise<Object> {
+    console.log("add",item);
+    return this._query.push().set(item);
   }
 
-  remove(item: any): Promise<Object> {
+  remove(item: any): Firebase.Promise<Object> {
     if (item === null || item.__firebaseKey__ === null) {
       return Promise.reject({message: 'Unknown item'});
     }
@@ -41,30 +33,12 @@ export class ReactiveCollection {
     return this._valueMap.get(key);
   }
 
-  removeByKey(key) {
-    return new Promise((resolve, reject) => {
-      this._query.ref().child(key).remove((error) =>{
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve(key);
-      });
-    });
+  removeByKey(key): Firebase.Promise<Object> {
+    return this._query.ref().child(key).remove();
   }
 
-  clear() {
-    //this._stopListeningToQuery(this._query);
-    return new Promise((resolve, reject) => {
-      let query = this._query.ref();
-      query.remove((error) => {
-        if (error) {
-          reject(error);
-          return;
-        }
-        resolve();
-      });
-    });
+  clear(): Firebase.Promise<Object> {
+    return this._query.ref().remove();
   }
 
   _listenToQuery(query) {

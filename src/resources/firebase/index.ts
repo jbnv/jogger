@@ -2,8 +2,13 @@ import * as Firebase from 'firebase';
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {EventAggregator} from 'aurelia-event-aggregator';
+
 import {Configuration} from './configuration';
-import {AuthenticationManager} from './authentication';
+import {AuthenticationManager,currentUser} from './authentication';
+import {ReactiveCollection} from './collection';
+
+import {Entity} from '../entity';
+import {State} from '../state';
 
 export {inject} from 'aurelia-framework';
 export {Router} from 'aurelia-router';
@@ -25,35 +30,102 @@ export class FirebaseModule {
   authManager = null;
   router = null;
   eventAggregator = null;
-  message = null;
-  state = null;
+  user = null;
+  state: State;
 
   constructor(authManager:AuthenticationManager, router:Router, eventAggregator: EventAggregator) {
     this.authManager = authManager;
     this.router = router;
     this.eventAggregator = eventAggregator;
+    this.user = currentUser();
+    this.state = new State();
   }
 
-  clearState = () => {
-    this.state = null;
-    this.message = null;
-  }
+  clearState = () => { this.state.clear(); }
+  setStateInfo = (message) => { this.state.setInfo(message); }
+  setStateError = (message) => { this.state.setError(message); }
 
-  setStateInfo = (message) => {
-    this.state = 'info';
-    this.message = message;
-  }
-
-  setStateError = (message) => {
-    this.state = 'error';
-    this.message = message;
-  }
 }
 
-export class FirebaseEntityModule<T> extends FirebaseModule {
-  item: T;
+export class FirebaseEntityModule extends FirebaseModule {
+  item: Entity;
+  itemClass: any;
+  collection: ReactiveCollection; // collection class that handles E
+  collectionClass: any;
+  state: State;
+  parameters: any;
+  title: string;
+  addTitle = "";
+  editTitle = "";
+  saveRoute = "";
+
+  newId() {
+    return
+  }
+
+  setEntityClass(c) {
+    this.itemClass = c;
+  }
+
+  setCollectionClass(c) {
+    this.collectionClass = c;
+  }
 
   reset() {
     this.item = null;
+  }
+
+  refresh() {
+    if (!this.parameters.id) {
+      this.item = new this.itemClass();
+      this.item.ownerId = this.user.uid;
+      this.title = this.addTitle;
+      console.log(this.item);
+      return;
+    }
+    this.title = this.editTitle;
+    //TODO Implement loading an existing item.
+    return;
+  }
+
+  saveItem() {
+    console.log("saveItem",this.item);
+    if (!this.item.isValid()) {
+      console.log("Item not valid!",this.item.state);
+      this.state.copy(this.item.state);
+      return;
+    }
+
+    // if (this.item.id) {
+    //   // this.collection.update(this.item).then(() => {
+    //   //   this.state.clear();
+    //   // })
+    //   // .catch((e) => {
+    //   //   this.state.setError(e.message);
+    //   // });
+    // } else {
+      console.log("Saving item.");
+      // this.item.generateId();
+      this.collection.add(this.item)
+      .then(() => {
+        console.log("Item saved.");
+        this.state.setInfo("Item saved.");
+        this.router.navigateToRoute('jogIndex');
+      })
+      .catch((e) => {
+        this.state.setError(e.message);
+      });
+    // }
+  }
+
+  removeItem() {
+//INCOMPLETE
+  }
+
+  activate(parameters,routeConfig) {
+    console.log("activate",parameters,routeConfig);
+    this.parameters = parameters;
+    //this.navModel = routeConfig.navModel;
+    return this.refresh();
   }
 }

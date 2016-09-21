@@ -1,17 +1,16 @@
 import {computedFrom} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {FirebaseEntityModule, inject, AuthenticationManager, Router, currentUser} from '../resources/firebase/index';
+import {FirebaseEntityModule, inject, AuthenticationManager, Router} from '../resources/firebase/index';
 import {Jog} from '../entities/jog';
 import {JogCollection} from '../collections/jog';
 import * as moment from 'moment';
 
 @inject(AuthenticationManager, Router, EventAggregator, JogCollection)
-export class JogIndex extends FirebaseEntityModule<Jog> {
-  collection = null;
-  message = null;
-  user = null;
+export class JogIndex extends FirebaseEntityModule<Jog,JogCollection> {
 
+  collection: JogCollection;
   filters = []; // array of Filter objects
+  user = null;
 
   constructor(
     authManager:AuthenticationManager,
@@ -21,21 +20,6 @@ export class JogIndex extends FirebaseEntityModule<Jog> {
   ) {
     super(authManager,router,eventAggregator);
     this.collection = collection;
-    this.user = currentUser();
-  }
-
-  add() {
-    this.collection.add(this.item).then(() => {
-      this.clearState();
-      this.reset();
-    })
-    .catch((e) => {
-      this.message = e.message;
-    });
-  }
-
-  fromNow(timestamp) {
-    return moment.unix(timestamp).fromNow();
   }
 
   @computedFrom('collection.items', 'selectedStateFilter', 'selectedOwnerFilter')

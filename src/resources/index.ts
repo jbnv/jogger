@@ -1,5 +1,2 @@
-import {FrameworkConfiguration} from 'aurelia-framework';
-
-export function configure(config: FrameworkConfiguration) {
-  //config.globalResources([]);
-}
+export function noop() { return null; }
+export function identity(value) { return value; }
