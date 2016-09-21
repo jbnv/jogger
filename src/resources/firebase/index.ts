@@ -143,9 +143,15 @@ export class FirebaseCollectionModule extends FirebaseModule {
 
   // returns items as a filtered and sorted array
   get items() {
-    //console.log("JogIndex.items");
     let rawItems = this.collection.items;
-    let subset = Object.keys(rawItems).map(key => rawItems[key]);
+    let subset = [];
+    for (var key in rawItems) {
+      if (key[0] === "-") {
+        var item = rawItems[key];
+        item.key = key;
+        subset.push(item);
+      }
+    }
     // Now items is an array, and we can sort and filter it for delivery.
     // this.filters.forEach(function(filter) {
     //   items = items.filter(item.check,this);
