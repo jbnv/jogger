@@ -2,7 +2,7 @@
 import {inject} from 'aurelia-framework';
 import {Redirect} from 'aurelia-router';
 import {AuthenticationManager, Configuration as FirebaseConfiguration, currentUser} from './resources/firebase/index';
-import environment from './environment';
+import config from './config';
 
 export class App {
 
@@ -21,7 +21,7 @@ export class App {
         auth: true
       },
       {
-        route: ['', 'jog'],
+        route: ['', 'jogs'],
         name: 'jogIndex',
         moduleId: 'jog/index',
         nav: true,
@@ -29,10 +29,17 @@ export class App {
         auth: true
       },
       {
-        route: ['jog/edit'],
+        route: ['jog/new'],
+        name: 'jogAdd',
+        moduleId: 'jog/edit',
+        title: 'Add Jog',
+        auth: true
+      },
+      {
+        route: ['jog/:id'],
         name: 'jogEdit',
         moduleId: 'jog/edit',
-        title: 'Add/Edit Jog',
+        title: 'Edit Jog',
         auth: true
       },
       {route: ['account/signin'], name: 'accountSignin', moduleId: 'account/signin', title: 'Sign in'},
@@ -79,7 +86,7 @@ class AuthorizeStep {
     if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
       let user = currentUser();
       if (!this.authManager || !user) {
-        return next.cancel(new Redirect(environment.loginRoute));
+        return next.cancel(new Redirect(config.loginRoute));
       }
     }
     return next();
