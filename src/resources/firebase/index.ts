@@ -32,6 +32,8 @@ export class FirebaseModule {
   eventAggregator = null;
   user = null;
   state: State;
+  parameters: any;
+  title: string;
 
   constructor(authManager:AuthenticationManager, router:Router, eventAggregator: EventAggregator) {
     this.authManager = authManager;
@@ -52,16 +54,9 @@ export class FirebaseEntityModule extends FirebaseModule {
   itemClass: any;
   collection: ReactiveCollection; // collection class that handles E
   collectionClass: any;
-  state: State;
-  parameters: any;
-  title: string;
   addTitle = "";
   editTitle = "";
   saveRoute = "";
-
-  newId() {
-    return
-  }
 
   setEntityClass(c) {
     this.itemClass = c;
