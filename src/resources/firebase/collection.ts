@@ -1,12 +1,12 @@
 import * as Firebase from 'firebase';
 import {Container} from 'aurelia-dependency-injection';
 import {Configuration} from './configuration';
+import {noop} from '../index';
 
 export class ReactiveCollection {
 
   _query = null;
-  _valueMap = new Map();
-  items = [];
+  items: any; // Firebase will return an object keyed to object IDs.
 
   constructor(path: string) {
     if (!Container || !Container.instance) throw Error('Container has not been made global');
@@ -30,87 +30,83 @@ export class ReactiveCollection {
   }
 
   getByKey(key): any {
-    return this._valueMap.get(key);
+    return this.items[key];
   }
 
   removeByKey(key): Firebase.Promise<Object> {
-    return this._query.ref().child(key).remove();
+    return this._query.child(key).remove();
   }
 
   clear(): Firebase.Promise<Object> {
-    return this._query.ref().remove();
+    return this._query.remove();
   }
 
   _listenToQuery(query) {
-    query.on('child_added', (snapshot, previousKey) => {
-      this._onItemAdded(snapshot, previousKey);
+    query.on('value', (snapshot) => {
+      this.items = this._valueFromSnapshot(snapshot);
     });
-    query.on('child_removed', (snapshot) => {
-      this._onItemRemoved(snapshot);
-    });
-    query.on('child_changed', (snapshot, previousKey) => {
-      this._onItemChanged(snapshot, previousKey);
-    });
-    query.on('child_moved', (snapshot, previousKey) => {
-      this._onItemMoved(snapshot, previousKey);
-    });
+    // query.on('child_added', (snapshot, previousKey) => {
+    //   this._onItemAdded(snapshot, previousKey);
+    // });
+    // query.on('child_removed', (snapshot) => {
+    //   this._onItemRemoved(snapshot);
+    // });
+    // query.on('child_changed', (snapshot, previousKey) => {
+    //   this._onItemChanged(snapshot, previousKey);
+    // });
+    // query.on('child_moved', (snapshot, previousKey) => {
+    //   this._onItemMoved(snapshot, previousKey);
+    // });
   }
 
   _stopListeningToQuery(query) {
     query.off();
   }
 
-  _onItemAdded(snapshot, previousKey) {
-    let value = this._valueFromSnapshot(snapshot);
-    let index = previousKey !== null ?
-      this.items.indexOf(this._valueMap.get(previousKey)) + 1 : 0;
-    this._valueMap.set(value.__firebaseKey__, value);
-    this.items.splice(index, 0, value);
-  }
-
-  _onItemRemoved(oldSnapshot) {
-    let key = oldSnapshot.key();
-    let value = this._valueMap.get(key);
-
-    if (!value) {
-      return;
-    }
-
-    let index = this.items.indexOf(value);
-    this._valueMap.delete(key);
-    if (index !== -1) {
-      this.items.splice(index, 1);
-    }
-  }
-
-  _onItemChanged(snapshot, previousKey) {
-    let value = this._valueFromSnapshot(snapshot);
-    let oldValue = this._valueMap.get(value.__firebaseKey__);
-
-    if (!oldValue) {
-      return;
-    }
-
-    this._valueMap.delete(oldValue.__firebaseKey__);
-    this._valueMap.set(value.__firebaseKey__, value);
-    this.items.splice(this.items.indexOf(oldValue), 1, value);
-  }
-
-  _onItemMoved(snapshot, previousKey) {
-    let key = snapshot.key();
-    let value = this._valueMap.get(key);
-
-    if (!value) {
-      return;
-    }
-
-    let previousValue = this._valueMap.get(previousKey);
-    let newIndex = previousValue !== null ? this.items.indexOf(previousValue) + 1 : 0;
-    this.items.splice(this.items.indexOf(value), 1);
-    this.items.splice(newIndex, 0, value);
-  }
+  // _onItemAdded(snapshot, previousKey) {
+  //   console.log("_onItemAdded",snapshot, previousKey,this.items);
+  //   let value = this._valueFromSnapshot(snapshot);
+  // }
+  //
+  // _onItemRemoved(oldSnapshot) {
+  //   console.log("_onItemRemoved",oldSnapshot);
+  //   let key = oldSnapshot.key;
+  //   let value = this.items[key];
+  //
+  //   if (!value) {
+  //     return;
+  //   }
+  //
+  // }
+  //
+  // _onItemChanged(snapshot, previousKey) {
+  //   console.log("_onItemChanged",snapshot, previousKey);
+  //   let value = this._valueFromSnapshot(snapshot);
+  //   let oldValue = this._valueMap.get(value.__firebaseKey__);
+  //
+  //   if (!oldValue) {
+  //     return;
+  //   }
+  //
+  //   this._valueMap.delete(oldValue.__firebaseKey__);
+  //   this._valueMap.set(value.__firebaseKey__, value);
+  // }
+  //
+  // _onItemMoved(snapshot, previousKey) {
+  //   console.log("_onItemMoved",snapshot, previousKey);
+  //   let key = snapshot.key;
+  //   let value = this._valueMap.get(key);
+  //
+  //   if (!value) {
+  //     return;
+  //   }
+  //
+  //   this._valueMap.delete(previousKey);
+  //   this._valueMap.set(value.__firebaseKey__, value);
+  // }
 
   _valueFromSnapshot(snapshot) {
+    console.log("_valueFromSnapshot",snapshot);
     let value = snapshot.val();
     if (!(value instanceof Object)) {
       value = {
@@ -118,12 +114,12 @@ export class ReactiveCollection {
         __firebasePrimitive__: true
       };
     }
-    value.__firebaseKey__ = snapshot.key();
+    value.__firebaseKey__ = snapshot.key;
     return value;
   }
 
   static _getChildLocation(root: string, path: Array<string>) {
-    console.log('ReactiveCollection.constructor: _getChildLocation',root,path);
+    console.log('_getChildLocation',root,path);
     if (!path) {
       return root;
     }

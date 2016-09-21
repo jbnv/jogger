@@ -1,12 +1,12 @@
 import {computedFrom} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {FirebaseEntityModule, inject, AuthenticationManager, Router} from '../resources/firebase/index';
+import {FirebaseCollectionModule, inject, AuthenticationManager, Router} from '../resources/firebase/index';
 import {Jog} from '../entities/jog';
 import {JogCollection} from '../collections/jog';
 import * as moment from 'moment';
 
 @inject(AuthenticationManager, Router, EventAggregator, JogCollection)
-export class JogIndex extends FirebaseEntityModule<Jog,JogCollection> {
+export class JogIndex extends FirebaseCollectionModule {
 
   collection: JogCollection;
   filters = []; // array of Filter objects
@@ -22,7 +22,7 @@ export class JogIndex extends FirebaseEntityModule<Jog,JogCollection> {
     this.collection = collection;
   }
 
-  @computedFrom('collection.items', 'selectedStateFilter', 'selectedOwnerFilter')
+  //@computedFrom('collection.items', 'selectedStateFilter', 'selectedOwnerFilter')
   get filteredItems() {
     console.log("JogIndex.filteredItems");
     let items = this.collection.items;
