@@ -16,8 +16,8 @@
       <td>${jog.time}</td>
       <td>${jog.distance/jog.time}</td>
       <td>
-        <button><i class="fa fa-pencil"></i></button>
-        <button><i class="fa fa-trash"></i></button>
+        <button click.trigger="edit(jog.key)" class="btn btn-default"><i class="fa fa-pencil"></i></button>
+        <button click.trigger="delete(jog.key)" class="btn btn-default"><i class="fa fa-trash"></i></button>
       </td>
     </tr>
 
