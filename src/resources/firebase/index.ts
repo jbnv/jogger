@@ -129,3 +129,33 @@ export class FirebaseEntityModule extends FirebaseModule {
     return this.refresh();
   }
 }
+
+export class FirebaseCollectionModule extends FirebaseModule {
+  collection: ReactiveCollection; // collection class that handles E
+  collectionClass: any;
+
+  // overrideable
+  refresh() {
+    return;
+  }
+
+  activate(parameters,routeConfig) {
+    console.log("activate",parameters,routeConfig);
+    this.parameters = parameters;
+    //this.navModel = routeConfig.navModel;
+    return this.refresh();
+  }
+
+  // returns items as a filtered and sorted array
+  get items() {
+    //console.log("JogIndex.items");
+    let rawItems = this.collection.items;
+    let subset = Object.keys(rawItems).map(key => rawItems[key]);
+    // Now items is an array, and we can sort and filter it for delivery.
+    // this.filters.forEach(function(filter) {
+    //   items = items.filter(item.check,this);
+    // });
+    return subset;
+  }
+
+}
