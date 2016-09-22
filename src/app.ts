@@ -42,6 +42,28 @@ export class App {
         title: 'Edit Jog',
         auth: true
       },
+      {
+        route: ['users'],
+        name: 'userIndex',
+        moduleId: 'user/index',
+        nav: true,
+        title: 'Users',
+        auth: true
+      },
+      {
+        route: ['user/new'],
+        name: 'userAdd',
+        moduleId: 'user/edit',
+        title: 'Add User',
+        auth: true
+      },
+      {
+        route: ['user/:id'],
+        name: 'userEdit',
+        moduleId: 'user/edit',
+        title: 'Edit User',
+        auth: true
+      },
       {route: ['account/signin'], name: 'accountSignin', moduleId: 'account/signin', title: 'Sign in'},
       {route: ['account/signup'], name: 'accountSignup', moduleId: 'account/signup', title: 'Sign up'},
       {

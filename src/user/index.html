@@ -1,0 +1,16 @@
+<template>
+
+  <section class="au-enter-active">
+    <div class="page-header">
+      <h1>
+        Users
+        <a class="btn btn-default" route-href="route: userAdd"><i class="fa fa-plus"></i></a>
+      </h1>
+    </div>
+  </section>
+
+  <section>
+    <compose view-model="user/table" model.bind="collection"></compose>
+  </section>
+
+</template>
