@@ -43,6 +43,13 @@ export class App {
         auth: true
       },
       {
+        route: ['jogweekly'],
+        name: 'jogWeekly',
+        moduleId: 'jog/weekly',
+        title: 'Report by Week',
+        auth: true
+      },
+      {
         route: ['users'],
         name: 'userIndex',
         moduleId: 'user/index',
