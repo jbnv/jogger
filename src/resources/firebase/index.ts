@@ -78,30 +78,47 @@ export class FirebaseEntityModule extends FirebaseModule {
       return;
     }
     this.title = this.editTitle;
+    let item = this.collection.getByKey(this.parameters.id);
+    this.item = new this.itemClass();
+    this.item.properties.forEach((key) => {
+      console.log(key,item[key]);
+      this.item[key] = item[key];
+    });
     return;
   }
 
   saveItem() {
+    let key = this.parameters.id;
+    console.log("saveItem",this.item,key);
     if (!this.item.isValid()) {
       console.log("Item not valid!",this.item.state);
       this.state.copy(this.item.state);
       return;
     }
 
-      this.collection.add(this.item)
-      .then(() => {
-        console.log("Item saved.");
-        this.state.setInfo("Item saved.");
-        this.router.navigateToRoute('jogIndex');
-      })
-      .catch((e) => {
-        this.state.setError(e.message);
-      });
-    // }
+    console.log("[99] Saving item.",this.item,key,this.collection);
+    this.collection.add(this.item,key)
+    .then(() => {
+      console.log("Item saved. Rerouting.",this.saveRoute);
+      this.state.setInfo("Item saved.");
+      this.router.navigateToRoute(this.saveRoute);
+    })
+    .catch((e) => {
+      this.state.setError(e.message);
+    });
   }
 
   removeItem() {
-//INCOMPLETE
+    console.log("removeItem",this.item,this.parameters.id);
+    this.collection.removeByKey(this.parameters.id)
+    .then(() => {
+      console.log("Item removed.");
+      this.state.setInfo("Item removed.");
+      this.router.navigateToRoute(this.saveRoute);
+    })
+    .catch((e) => {
+      this.state.setError(e.message);
+    });
   }
 
   activate(parameters,routeConfig) {

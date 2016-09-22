@@ -21,6 +21,7 @@ export class EditJog extends FirebaseEntityModule {
     this.collectionClass = JogCollection;
     this.addTitle = "Add Jog";
     this.editTitle = "Edit Jog";
+    this.saveRoute = "jogIndex";
   }
 
 

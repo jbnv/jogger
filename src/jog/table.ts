@@ -1,7 +1,16 @@
-//import {ReactiveCollection} from '../resources/firebase/collection';
+import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
 
+import {ReactiveCollection} from '../resources/firebase/collection';
+
+@inject(Router)
 export class JogTable {
   content: any;
+  router = null;
+
+  constructor(router) {
+    this.router = router;
+  }
 
   bind(bindingContext, overrideContext) {
   }
@@ -21,5 +30,9 @@ export class JogTable {
     //
     // this.sort('songAdjustedAverage');
 
+  }
+
+  edit(key) {
+    this.router.navigateToRoute('jogEdit',{id:key});
   }
 }
