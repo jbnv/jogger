@@ -4,7 +4,7 @@ import {Router} from 'aurelia-router';
 import {EventAggregator} from 'aurelia-event-aggregator';
 
 import {Configuration} from './configuration';
-import {AuthenticationManager,currentUser} from './authentication';
+import {AuthenticationManager,currentUser,isAuthenticated} from './authentication';
 import {ReactiveCollection} from './collection';
 
 import {Entity} from '../entity';
@@ -13,7 +13,7 @@ import {State} from '../state';
 export {inject} from 'aurelia-framework';
 export {Router} from 'aurelia-router';
 export {Configuration} from './configuration';
-export {AuthenticationManager, currentUser} from './authentication';
+export {AuthenticationManager,currentUser,isAuthenticated} from './authentication';
 export {ReactiveCollection} from './collection';
 
 export function configure(aurelia: any, configCallback: Function) {
