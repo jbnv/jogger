@@ -75,32 +75,19 @@ export class FirebaseEntityModule extends FirebaseModule {
       this.item = new this.itemClass();
       this.item.ownerId = this.user.uid;
       this.title = this.addTitle;
-      console.log(this.item);
       return;
     }
     this.title = this.editTitle;
-    //TODO Implement loading an existing item.
     return;
   }
 
   saveItem() {
-    console.log("saveItem",this.item);
     if (!this.item.isValid()) {
       console.log("Item not valid!",this.item.state);
       this.state.copy(this.item.state);
       return;
     }
 
-    // if (this.item.id) {
-    //   // this.collection.update(this.item).then(() => {
-    //   //   this.state.clear();
-    //   // })
-    //   // .catch((e) => {
-    //   //   this.state.setError(e.message);
-    //   // });
-    // } else {
-      console.log("Saving item.");
-      // this.item.generateId();
       this.collection.add(this.item)
       .then(() => {
         console.log("Item saved.");

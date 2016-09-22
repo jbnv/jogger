@@ -4,12 +4,11 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 
 import {Configuration} from './configuration';
 
-export function currentUser() {
+export function currentUser() : Firebase.User {
   return Firebase.auth().currentUser;
 }
 
 export function isAuthenticated() : boolean {
-  console.log("isAuthenticated",Firebase.auth().currentUser);
   return Firebase.auth().currentUser != null;
 }
 
@@ -29,7 +28,6 @@ export class AuthenticationManager {
    */
   constructor(configuration: Configuration, eventAggregator: EventAggregator)
   {
-    console.log("AuthenticationManager.constructor");
     this._firebase = Firebase.database().ref();
     this._events = eventAggregator;
 
@@ -49,7 +47,6 @@ export class AuthenticationManager {
    * @returns {Promise<User>} - Returns a promise which on completion will return the user infos
    */
   createUser(email, password): Firebase.Promise<any> {
-    console.log("AuthenticationManager.createUser");
     return Firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(result => {
         this._events.publish('user-created',result);
@@ -64,7 +61,6 @@ export class AuthenticationManager {
    * @returns {Promise<User>} Returns a promise which on completion will return user infos
    */
   signIn(email, password): Firebase.Promise<any> {
-    console.log("AuthenticationManager.signIn");
     return Firebase.auth().signInWithEmailAndPassword(email, password)
       .then(result => {
         this._events.publish('user-signin',result);

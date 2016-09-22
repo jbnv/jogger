@@ -12,10 +12,6 @@ export class Entity {
     this.state = new State();
   }
 
-  // generateId = () => {
-  //   this.id = moment([2016,09,21]).diff(moment(),"seconds");
-  // }
-
   // validators: [{match function,message}]
   validators = [];
 
