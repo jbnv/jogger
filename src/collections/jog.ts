@@ -1,3 +1,4 @@
+import * as Firebase from 'firebase';
 import 'moment';
 import {inject, computedFrom} from 'aurelia-framework';
 import {ReactiveCollection, AuthenticationManager, currentUser} from '../resources/firebase/index';
@@ -23,7 +24,7 @@ export class JogCollection extends ReactiveCollection {
     });
   }
 
-  add(jog:Jog) {
+  add(jog:Jog,key:string = null) : Firebase.Promise<Object> {
     let user = currentUser();
     if (!user) {
       return Promise.reject({message: 'Authentication is required'});
@@ -35,6 +36,6 @@ export class JogCollection extends ReactiveCollection {
     let outbound =  jog.clone();
     outbound.ownerId = user.uid;
     outbound.timestamp = Math.floor(Date.now() / 1000);
-    return super.add(outbound);
+    return super.add(outbound,key);
   }
 }

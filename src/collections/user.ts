@@ -33,6 +33,6 @@ export class UserCollection extends ReactiveCollection {
 
     let outbound =  user.clone();
     outbound.timestamp = Math.floor(Date.now() / 1000);
-    return super.add(outbound);
+    return super.add(outbound,user.ownerId);
   }
 }
