@@ -17,9 +17,11 @@ export class ReactiveCollection {
     this._listenToQuery(this._query);
   }
 
-  add(item:any) : Firebase.Promise<Object> {
-    console.log("add",item);
-    return this._query.push().set(item);
+  add(item:any,key:string = null) : Firebase.Promise<Object> {
+    if (key) {
+      return this._query.child(key).set(item);
+    }
+    return this._query.push(item);
   }
 
   remove(item: any): Firebase.Promise<Object> {
