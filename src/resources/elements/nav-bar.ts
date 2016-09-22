@@ -1,14 +1,19 @@
 import {bindable} from 'aurelia-framework';
-import {isAuthenticated} from '../firebase/authentication';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import {inject} from '../firebase/index';
 
+@inject(EventAggregator)
 export class NavBar {
 
   @bindable router = null;
+  isAuthenticated = false;
 
-  constructor() {
-  }
-
-  get isAuthenticated() : boolean {
-    return isAuthenticated();
+  constructor(eventAggregator) {
+    eventAggregator.subscribe('user-signin',(user) => {
+      this.isAuthenticated = true;
+    });
+    eventAggregator.subscribe('user-signout',(user) => {
+      this.isAuthenticated = false;
+    });
   }
 }
