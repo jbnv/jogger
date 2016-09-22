@@ -8,6 +8,11 @@ export function currentUser() {
   return Firebase.auth().currentUser;
 }
 
+export function isAuthenticated() : boolean {
+  console.log("isAuthenticated",Firebase.auth().currentUser);
+  return Firebase.auth().currentUser != null;
+}
+
 /**
  * Handles Firebase authentication features
  */
