@@ -7,6 +7,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 export class Identity extends FirebaseModule {
 
   user = null;
+  email = null;
 
   constructor(
     authManager:AuthenticationManager,
@@ -16,12 +17,14 @@ export class Identity extends FirebaseModule {
     super(authManager,router,eventAggregator);
     eventAggregator.subscribe('user-signin',(user) => {
       this.user = user;
+      this.email = user.email;
     });
   }
 
   signOut() {
     this.authManager.signOut().then(() => {
       this.user = null;
+      this.email = null;
       this.router.navigateToRoute('home');
     });
   }
