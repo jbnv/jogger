@@ -17,6 +17,28 @@ export class ReactiveCollection {
     this._listenToQuery(this._query);
   }
 
+  viewFilters = []; // array of functions on which to filter the data
+  viewSortFn = (a,b) => 0; // default: do nothing
+
+  // view(): Returns items as a filtered and sorted array.
+  get view() {
+    //console.log("ReactiveCollection.view");
+
+    let rawItems = this.items;
+    let subset = [];
+    for (var key in rawItems) {
+      if (key[0] === "-") {
+        var item = rawItems[key];
+        item.key = key;
+        subset.push(item);
+      }
+    }
+
+    subset = this.viewFilters.reduce((prev,fn) => prev.filter(fn), subset);
+    subset.sort(this.viewSortFn);
+    return subset;
+  }
+
   add(item:any,key:string = null) : Firebase.Promise<Object> {
     if (key) {
       return this._query.child(key).set(item);
