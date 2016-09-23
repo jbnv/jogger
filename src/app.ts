@@ -1,7 +1,7 @@
 //import 'nprogress';
 import {inject} from 'aurelia-framework';
 import {Redirect} from 'aurelia-router';
-import {AuthenticationManager, Configuration as FirebaseConfiguration, currentUser} from './resources/firebase/index';
+import {AuthenticationManager, Configuration as FirebaseConfiguration, isAuthenticated} from './resources/firebase/index';
 import config from './config';
 
 export class App {
@@ -113,8 +113,7 @@ class AuthorizeStep {
     // Check if the route has an "auth" key
     // Then check if the current authenticated user is valid
     if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
-      let user = currentUser();
-      if (!this.authManager || !user) {
+      if (!this.authManager || !isAuthenticated()) {
         return next.cancel(new Redirect(config.loginRoute));
       }
     }
