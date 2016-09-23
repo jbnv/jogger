@@ -19,7 +19,10 @@ export class JogIndex extends FirebaseCollectionModule {
   showFilters = false;
   toggleFilters() {
     this.showFilters = !this.showFilters;
-    console.log("toggleFilters",this.showFilters);
+    if (!this.showFilters) {
+      this.filterContext.fromDate = null;
+      this.filterContext.toDate = null;
+    }
   }
 
   filterContext = {
