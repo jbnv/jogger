@@ -1,17 +1,20 @@
 import * as Firebase from 'firebase';
 import {Container} from 'aurelia-dependency-injection';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {Configuration} from './configuration';
 import {noop} from '../index';
 
 export class ReactiveCollection {
 
   _query = null;
+  _events: EventAggregator
   items: any; // Firebase will return an object keyed to object IDs.
 
   constructor(path: string) {
     if (!Container || !Container.instance) throw Error('Container has not been made global');
     let config = Container.instance.get(Configuration);
     if (!config) throw Error('Configuration has not been set');
+    this._events = Container.instance.get(EventAggregator);
 
     this._query = Firebase.database().ref(path);
     this._listenToQuery(this._query);
