@@ -1,14 +1,18 @@
 <template>
-  <require from="../resources/decimal"></require>
 
   <section class="au-enter-active">
     <div class="page-header">
       <h1>
         Jogs
         <a class="btn btn-default" route-href="route: jogAdd"><i class="fa fa-plus"></i></a>
+        <a class="btn btn-default" click.trigger="toggleFilters()"><i class="fa fa-filter"></i></a>
         <a class="btn btn-default" route-href="route: jogWeekly"><i class="fa fa-calendar-o"></i> Summary</a>
       </h1>
     </div>
+  </section>
+
+  <section>
+    <compose view-model="jog/filter" model.bind="filterContext"></compose>
   </section>
 
   <section>
