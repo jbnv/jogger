@@ -1,38 +1,25 @@
-import {inject} from 'aurelia-framework';
+import {Container} from 'aurelia-dependency-injection';
 import {Router} from 'aurelia-router';
+import {EventAggregator} from 'aurelia-event-aggregator';
 
 import {ReactiveCollection} from '../resources/firebase/collection';
 
-@inject(Router)
 export class JogTable {
   content: any;
-  router = null;
+  _events: EventAggregator;
+  _router: Router;
 
   constructor(router) {
-    this.router = router;
-  }
-
-  bind(bindingContext, overrideContext) {
+    if (!Container || !Container.instance) throw Error('Container has not been made global');
+    this._router = Container.instance.get(Router);
   }
 
   activate(data) {
-
     console.log("JogTable.activate",data);
     this.content = data.items;
-
-    // this.aggregate();
-    //
-    // if (data.showOnly) {
-    //   Columns.prototype.showOnly.apply(this.columns,data.showOnly);
-    // } else if (data.hide) {
-    //   Columns.prototype.hide.apply(this.columns,data.hide);
-    // }
-    //
-    // this.sort('songAdjustedAverage');
-
   }
 
   edit(key) {
-    this.router.navigateToRoute('jogEdit',{id:key});
+    this._router.navigateToRoute('jogEdit',{id:key});
   }
 }
