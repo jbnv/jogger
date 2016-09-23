@@ -3,6 +3,7 @@ export class State {
 
   message: string;
   state: string;
+  bootstrapContext: string;
 
   clear = () => {
     this.state = null;
@@ -11,17 +12,20 @@ export class State {
 
   setInfo = (message) => {
     this.state = 'info';
+    this.bootstrapContext = 'info';
     this.message = message;
   }
 
   setError = (message) => {
     this.state = 'error';
+    this.bootstrapContext = 'danger';
     this.message = message;
   }
 
   // Copy state from another state entity.
   copy = (that: State) => {
     this.state = that.state;
+    this.bootstrapContext = that.bootstrapContext;
     this.message = that.message;
   }
 

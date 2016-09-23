@@ -12,7 +12,9 @@
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password" placeholder="Password" value.bind="password">
       </div>
-      <div if.bind="message" class="alert alert-danger">${message}</div>
+      <div class="alert alert-${state.bootstrapContext}" show.bind="state.state">
+        ${state.message}
+      </div>
       <input type="submit" value="Sign up" class="btn btn-default"/>
     </form>
   </section>

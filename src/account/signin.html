@@ -3,7 +3,7 @@
     <div class="page-header">
       <h1>Sign in</h1>
     </div>
-		<form role="form" submit.trigger="signIn()">		
+		<form role="form" submit.trigger="signIn()">
 			<div class="form-group">
     			<label for="email">Email address</label>
     			<input type="email" class="form-control" id="email" placeholder="Email" value.bind="email">
@@ -12,9 +12,9 @@
     			<label for="password">Password</label>
     			<input type="password" class="form-control" id="password" placeholder="Password" value.bind="password">
   			</div>
-      <div if.bind="message" class="alert alert-danger">
-        ${message}
-      </div>
+				<div class="alert alert-${state.bootstrapContext}" show.bind="state.state">
+			    ${state.message}
+			  </div>
 			  <input type="submit" value="Sign in" class="btn btn-default"/> New user ? <a route-href="route: accountSignup">Create an account</a>
 		</form>
 
