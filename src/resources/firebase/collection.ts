@@ -23,6 +23,22 @@ export class ReactiveCollection {
   viewFilters = []; // array of functions on which to filter the data
   viewSortFn = (a,b) => 0; // default: do nothing
 
+  // Returns a Promise that items will actually be available.
+  waitForItems(retriesAllowed) : Firebase.Promise<any> {
+    return new Firebase.Promise<any>(() => {
+      var retriesMade = 0;
+
+      var check = () => {
+          if (this.items) { console.log("SUCCESS",this.items); return this.items; }
+          if (retriesMade >= retriesAllowed) { console.log("FAIL"); throw new Error(); }
+          ++retriesMade;
+          setTimeout(check, 1000);
+      }
+
+      check(); // invoke check once to start the cycle
+    });
+  }
+
   // view(): Returns items as a filtered and sorted array.
   get view() {
 
