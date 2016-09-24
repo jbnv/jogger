@@ -3,6 +3,8 @@ import {ReactiveCollection} from './firebase/index';
 
 export class UserProperties extends ReactiveCollection {
 
+  uid = null;
+
   get role() {
     return (this.items || {}).role;
   }
@@ -16,6 +18,7 @@ export class UserProperties extends ReactiveCollection {
 
   constructor(uid) {
     super(`users/${uid}`);
+    this.uid = uid;
     this._events.publish('user-properties',this);
   }
 }

@@ -5,14 +5,16 @@ import {Jog} from '../entities/jog';
 import {JogCollection} from '../collections/jog';
 import * as moment from 'moment';
 import {sortByDate} from '../transform';
+import {UserProperties,currentUserProperties} from '../resources/user';
 
 @inject(AuthenticationManager, Router, EventAggregator, JogCollection)
 export class JogIndex extends FirebaseCollectionModule {
 
   collection: JogCollection;
   _events: EventAggregator;
-  user = null;
+  userProperties: UserProperties;
 
+  securityFilterFn = (item) => this.userProperties.role === 'admin' || item.ownerId == this.userProperties.uid;
   fromDateFilterFn = (item) => !this.filterContext.fromDate || item.date >= this.filterContext.fromDate;
   toDateFilterFn = (item) => !this.filterContext.toDate || item.date <= this.filterContext.toDate;
 
@@ -31,8 +33,8 @@ export class JogIndex extends FirebaseCollectionModule {
   }
 
   regenerate() {
-    console.log("JogIndex.regenerate");
-    this.collection.viewFilters = [this.fromDateFilterFn,this.toDateFilterFn];
+    this.userProperties = currentUserProperties();
+    this.collection.viewFilters = [this.securityFilterFn,this.fromDateFilterFn,this.toDateFilterFn];
     this.collection.viewSortFn = sortByDate;
   }
 
