@@ -30,7 +30,7 @@ export class ReactiveCollection {
     let rawItems = this.items;
     let subset = [];
     for (var key in rawItems) {
-      if (key[0] === "-") {
+      if (key !== "__firebaseKey__") {
         var item = rawItems[key];
         item.key = key;
         subset.push(item);
