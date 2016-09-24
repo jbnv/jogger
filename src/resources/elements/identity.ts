@@ -9,7 +9,13 @@ export class Identity extends FirebaseModule {
 
   user = null;
   email = null;
-  icon = null;
+  properties = {};
+
+  reset() {
+    this.user = null;
+    this.email = null;
+    this.properties = {};
+  }
 
   constructor(
     authManager:AuthenticationManager,
@@ -17,24 +23,17 @@ export class Identity extends FirebaseModule {
     eventAggregator: EventAggregator
   ) {
     super(authManager,router,eventAggregator);
+    this.reset();
     eventAggregator.subscribe('user-signin',(user) => {
       this.user = user;
       this.email = user.email;
-      let properties = currentUserProperties();
-    });
-    eventAggregator.subscribe('user-properties',(properties) => {
-      console.log("user-properties: properties",properties);
-      console.log("user-properties: properties.icon",properties.icon);
-      this.icon = properties.icon;
-      console.log("user-properties: icon",this.icon);
+      this.properties = currentUserProperties();
     });
   }
 
   signOut() {
     this.authManager.signOut().then(() => {
-      this.user = null;
-      this.email = null;
-      this.icon = null;
+      this.reset();
       this.router.navigateToRoute('home');
     });
   }
