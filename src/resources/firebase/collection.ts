@@ -29,8 +29,8 @@ export class ReactiveCollection {
       var retriesMade = 0;
 
       var check = () => {
-          if (this.items) { console.log("SUCCESS",this.items); return this.items; }
-          if (retriesMade >= retriesAllowed) { console.log("FAIL"); throw new Error(); }
+          if (this.items) { return this.items; }
+          if (retriesMade >= retriesAllowed) { throw new Error(); }
           ++retriesMade;
           setTimeout(check, 1000);
       }
@@ -72,6 +72,7 @@ export class ReactiveCollection {
   }
 
   getByKey(key): any {
+    if (!this.items) return null;
     return this.items[key];
   }
 

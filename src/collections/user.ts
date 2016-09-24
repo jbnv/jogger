@@ -10,19 +10,6 @@ export class UserCollection extends ReactiveCollection {
     super('users');
   }
 
-  @computedFrom('items')
-  get orderedItems() {
-    return this.items.sort((item1, item2) => {
-      if(item1.timestamp < item2.timestamp) {
-        return -1;
-      }
-      if(item2.timestamp > item2.timestamp) {
-        return 1;
-      }
-      return 0;
-    });
-  }
-
   add(user:User) {
     if (!currentUser()) {
       return Promise.reject({message: 'Authentication is required'});

@@ -34,7 +34,7 @@ export class Identity extends FirebaseModule {
   signOut() {
     this.authManager.signOut().then(() => {
       this.reset();
-      this.router.navigateToRoute('home');
+      this.router.navigateToRoute('account/signin');
     });
   }
 
