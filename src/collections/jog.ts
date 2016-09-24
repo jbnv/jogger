@@ -11,19 +11,6 @@ export class JogCollection extends ReactiveCollection {
     super('jogs');
   }
 
-  @computedFrom('items')
-  get orderedItems() {
-    return this.items.sort((item1, item2) => {
-      if(item1.timestamp < item2.timestamp) {
-        return -1;
-      }
-      if(item2.timestamp > item2.timestamp) {
-        return 1;
-      }
-      return 0;
-    });
-  }
-
   add(jog:Jog,key:string = null) : Firebase.Promise<Object> {
     let user = currentUser();
     if (!user) {

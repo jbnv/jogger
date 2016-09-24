@@ -25,7 +25,6 @@ export class ReactiveCollection {
 
   // view(): Returns items as a filtered and sorted array.
   get view() {
-    //console.log("ReactiveCollection.view");
 
     let rawItems = this.items;
     let subset = [];
@@ -72,68 +71,13 @@ export class ReactiveCollection {
     query.on('value', (snapshot) => {
       this.items = this._valueFromSnapshot(snapshot);
     });
-    // query.on('child_added', (snapshot, previousKey) => {
-    //   this._onItemAdded(snapshot, previousKey);
-    // });
-    // query.on('child_removed', (snapshot) => {
-    //   this._onItemRemoved(snapshot);
-    // });
-    // query.on('child_changed', (snapshot, previousKey) => {
-    //   this._onItemChanged(snapshot, previousKey);
-    // });
-    // query.on('child_moved', (snapshot, previousKey) => {
-    //   this._onItemMoved(snapshot, previousKey);
-    // });
   }
 
   _stopListeningToQuery(query) {
     query.off();
   }
 
-  // _onItemAdded(snapshot, previousKey) {
-  //   console.log("_onItemAdded",snapshot, previousKey,this.items);
-  //   let value = this._valueFromSnapshot(snapshot);
-  // }
-  //
-  // _onItemRemoved(oldSnapshot) {
-  //   console.log("_onItemRemoved",oldSnapshot);
-  //   let key = oldSnapshot.key;
-  //   let value = this.items[key];
-  //
-  //   if (!value) {
-  //     return;
-  //   }
-  //
-  // }
-  //
-  // _onItemChanged(snapshot, previousKey) {
-  //   console.log("_onItemChanged",snapshot, previousKey);
-  //   let value = this._valueFromSnapshot(snapshot);
-  //   let oldValue = this._valueMap.get(value.__firebaseKey__);
-  //
-  //   if (!oldValue) {
-  //     return;
-  //   }
-  //
-  //   this._valueMap.delete(oldValue.__firebaseKey__);
-  //   this._valueMap.set(value.__firebaseKey__, value);
-  // }
-  //
-  // _onItemMoved(snapshot, previousKey) {
-  //   console.log("_onItemMoved",snapshot, previousKey);
-  //   let key = snapshot.key;
-  //   let value = this._valueMap.get(key);
-  //
-  //   if (!value) {
-  //     return;
-  //   }
-  //
-  //   this._valueMap.delete(previousKey);
-  //   this._valueMap.set(value.__firebaseKey__, value);
-  // }
-
   _valueFromSnapshot(snapshot) {
-    console.log("_valueFromSnapshot",snapshot);
     let value = snapshot.val();
     if (!(value instanceof Object)) {
       value = {
@@ -146,7 +90,6 @@ export class ReactiveCollection {
   }
 
   static _getChildLocation(root: string, path: Array<string>) {
-    console.log('_getChildLocation',root,path);
     if (!path) {
       return root;
     }
