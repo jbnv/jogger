@@ -21,14 +21,4 @@ export class UserIndex extends FirebaseCollectionModule {
     super(authManager,router,eventAggregator);
     this.collection = collection;
   }
-
-  //@computedFrom('collection.items', 'selectedStateFilter', 'selectedOwnerFilter')
-  get filteredItems() {
-    console.log("UserIndex.filteredItems");
-    let items = this.collection.items;
-    // this.filters.forEach(function(filter) {
-    //   items = items.filter(item.check,this);
-    // });
-    return items;
-  }
 }

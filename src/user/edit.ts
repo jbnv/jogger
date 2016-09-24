@@ -18,9 +18,9 @@ export class EditUser extends FirebaseEntityModule {
     super(authManager,router,eventAggregator);
     this.collection = collection;
     this.itemClass = User;
-    this.collectionClass = UserCollection;
     this.addTitle = "Add User";
     this.editTitle = "Edit User";
+    this.saveRoute = "userIndex";
   }
 
 
