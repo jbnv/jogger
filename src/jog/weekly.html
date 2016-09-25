@@ -1,4 +1,5 @@
 <template>
+  <require from="../resources/value-converters/decimal"></require>
 
   <section class="au-enter-active">
     <div class="page-header">
@@ -14,20 +15,20 @@
 
       <tr>
         <th>Week</th>
-        <th>Jogs</th>
-        <th>Distance</th>
-        <th>Time</th>
-        <th>Avg.Speed</th>
-        <th>Avg.Distance</th>
+        <th style="align:right">Jogs</th>
+        <th style="align:right">Distance</th>
+        <th style="align:right">Time</th>
+        <th style="align:right">Avg.Speed</th>
+        <th style="align:right">Avg.Distance</th>
       </tr>
 
       <tr repeat.for="week of reducedDataAsArray">
         <td>${week.startDate} to ${week.endDate}</td>
-        <td>${week.jogs}</td>
-        <td>${week.totalDistance}</td>
-        <td>${week.totalTime}</td>
-        <td>${week.totalDistance/week.totalTime}</td>
-        <td>${week.totalDistance/week.jogs}</td>
+        <td style="align:right">${week.jogs}</td>
+        <td style="align:right">${week.totalDistance | decimal:2}</td>
+        <td style="align:right">${week.totalTime | decimal:2}</td>
+        <td style="align:right">${week.totalDistance/week.totalTime | decimal:2}</td>
+        <td style="align:right">${week.totalDistance/week.jogs | decimal:2}</td>
       </tr>
 
     </table>
