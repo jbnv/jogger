@@ -25,5 +25,6 @@ export class UserProperties extends ReactiveCollection {
 
 export function currentUserProperties() : UserProperties {
   let user = Firebase.auth().currentUser;
+  if (!user) return null;
   return new UserProperties(user.uid);
 }
