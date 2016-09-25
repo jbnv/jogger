@@ -1,20 +1,26 @@
 <template>
+  <require from="../resources/value-converters/decimal"></require>
 
   <table class="table table-hover">
 
     <tr>
       <th>Date</th>
-      <th>Distance</th>
-      <th>Time</th>
-      <th>Avg.Speed</th>
+      <th></th>
+      <th style="align:right">Distance</th>
+      <th style="align:right">Time</th>
+      <th style="align:right">Avg.Speed</th>
       <th></th>
     </tr>
 
     <tr repeat.for="jog of items">
       <td>${jog.date}</td>
-      <td>${jog.distance}</td>
-      <td>${jog.time}</td>
-      <td>${jog.distance/jog.time}</td>
+      <td>
+        <i if.bind="jog.ownerId == userProperties.uid" class="fa fa-circle"></i>
+        <i if.bind="jog.ownerId != userProperties.uid" class="fa fa-circle-thin"></i>
+      </td>
+      <td style="align:right">${jog.distance | decimal:2}</td>
+      <td style="align:right">${jog.time | decimal:2}</td>
+      <td style="align:right">${jog.distance/jog.time | decimal:2}</td>
       <td>
         <button click.trigger="edit(jog.key)" class="btn btn-default"><i class="fa fa-pencil"></i></button>
       </td>
