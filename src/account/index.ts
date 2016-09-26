@@ -1,13 +1,11 @@
-import * as Firebase from 'firebase';
-import {FirebaseModule} from '../resources/firebase/index';
+import {FirebaseModule,currentUser} from '../resources/firebase/index';
 
 export class Account extends FirebaseModule {
 
-  newEmail = null;
-  newPassword =  null;
-  password = null;
+  email = null;
 
-  update() {
-
+  activate() {
+    this.email = currentUser().email;
   }
+
 }
