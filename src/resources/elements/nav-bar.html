@@ -16,8 +16,11 @@
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}" show.bind="isAuthenticated">
-            <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href.bind="row.href">${row.title}</a>
+          <li class="${row.isActive ? 'active' : ''}" show.bind="showJogs">
+            <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href="#/jogs">Jogs</a>
+          </li>
+          <li class="${row.isActive ? 'active' : ''}" show.bind="showUsers">
+            <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href="#/users">Users</a>
           </li>
         </ul>
 
