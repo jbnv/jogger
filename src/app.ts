@@ -21,7 +21,7 @@ export class App {
         auth: true
       },
       {
-        route: ['', 'jogs'],
+        route: ['jogs'],
         name: 'jogIndex',
         moduleId: 'jog/index',
         nav: true,

@@ -5,7 +5,7 @@
 
     <tr>
       <th>Date</th>
-      <th></th>
+      <th show.bind="userProperties.role == 'admin'"></th>
       <th style="align:right">Distance</th>
       <th style="align:right">Time</th>
       <th style="align:right">Avg.Speed</th>
@@ -14,7 +14,7 @@
 
     <tr repeat.for="jog of items">
       <td>${jog.date}</td>
-      <td>
+      <td show.bind="userProperties.role == 'admin'">
         <i if.bind="jog.ownerId == userProperties.uid" class="fa fa-circle"></i>
         <i if.bind="jog.ownerId != userProperties.uid" class="fa fa-circle-thin"></i>
       </td>

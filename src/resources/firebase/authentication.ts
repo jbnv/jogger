@@ -44,7 +44,7 @@ export class AuthenticationManager {
    * Creates a new user but does not authenticate him.
    * @param {string} email - The user email
    * @param {string} password - The user password
-   * @returns {Promise<User>} - Returns a promise which on completion will return the user infos
+   * @returns {Firebase.Promise<any>} - Returns a promise which on completion will return the user infos
    */
   createUser(email, password): Firebase.Promise<any> {
     return Firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -58,7 +58,7 @@ export class AuthenticationManager {
    * Sign in a user with a password.
    * @param {string} email - The user email
    * @param {string} password - The user password
-   * @returns {Promise<User>} Returns a promise which on completion will return user infos
+   * @returns {Firebase.Promise<any>} Returns a promise which on completion will return user infos
    */
   signIn(email, password): Firebase.Promise<any> {
     return Firebase.auth().signInWithEmailAndPassword(email, password)
@@ -72,7 +72,7 @@ export class AuthenticationManager {
    * Creates a user and automatically sign in if creation succeed
    * @param {string} email - The user email
    * @param {string} password - The user password
-   * @returns {Promise<User>} - Returns a promise which on completion will return user infos
+   * @returns {Firebase.Promise<any>} - Returns a promise which on completion will return user infos
    */
   createUserAndSignIn(email, password): Firebase.Promise<any> {
     return this.createUser(email, password).then(() => {
