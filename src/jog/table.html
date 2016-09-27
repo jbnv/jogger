@@ -6,10 +6,10 @@
     <tr>
       <th>Date</th>
       <th show.bind="userProperties.role == 'admin'"></th>
-      <th style="align:right">Distance</th>
-      <th style="align:right">Time</th>
-      <th style="align:right">Avg.Speed</th>
-      <th></th>
+      <th style="text-align:right">Distance</th>
+      <th style="text-align:right">Time</th>
+      <th style="text-align:right">Avg.Speed</th>
+      <th style="text-align:right"></th>
     </tr>
 
     <tr repeat.for="jog of items">
@@ -18,10 +18,10 @@
         <i if.bind="jog.ownerId == userProperties.uid" class="fa fa-circle"></i>
         <i if.bind="jog.ownerId != userProperties.uid" class="fa fa-circle-thin"></i>
       </td>
-      <td style="align:right">${jog.distance | decimal:2}</td>
-      <td style="align:right">${jog.time | decimal:2}</td>
-      <td style="align:right">${jog.distance/jog.time | decimal:2}</td>
-      <td>
+      <td style="text-align:right">${jog.distance | decimal:2}</td>
+      <td style="text-align:right">${jog.time | decimal:2}</td>
+      <td style="text-align:right">${jog.distance/jog.time | decimal:2}</td>
+      <td style="text-align:right">
         <button click.trigger="edit(jog.key)" class="btn btn-default"><i class="fa fa-pencil"></i></button>
       </td>
     </tr>

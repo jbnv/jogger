@@ -5,13 +5,13 @@
     <tr>
       <th>ID</th>
       <th>Role</th>
-      <th></th>
+      <th style="text-align:right"></th>
     </tr>
 
     <tr repeat.for="user of items">
       <td>${user.ownerId}</td>
       <td>${user.role}</td>
-      <td>
+      <td style="text-align:right">
         <button click.trigger="edit(user.key)" class="btn btn-default"><i class="fa fa-pencil"></i></button>
       </td>
     </tr>

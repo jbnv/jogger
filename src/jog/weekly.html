@@ -15,20 +15,20 @@
 
       <tr>
         <th>Week</th>
-        <th style="align:right">Jogs</th>
-        <th style="align:right">Distance</th>
-        <th style="align:right">Time</th>
-        <th style="align:right">Avg.Speed</th>
-        <th style="align:right">Avg.Distance</th>
+        <th style="text-align:right">Jogs</th>
+        <th style="text-align:right">Distance</th>
+        <th style="text-align:right">Time</th>
+        <th style="text-align:right">Avg.Speed</th>
+        <th style="text-align:right">Avg.Distance</th>
       </tr>
 
       <tr repeat.for="week of reducedDataAsArray">
         <td>${week.startDate} to ${week.endDate}</td>
-        <td style="align:right">${week.jogs}</td>
-        <td style="align:right">${week.totalDistance | decimal:2}</td>
-        <td style="align:right">${week.totalTime | decimal:2}</td>
-        <td style="align:right">${week.totalDistance/week.totalTime | decimal:2}</td>
-        <td style="align:right">${week.totalDistance/week.jogs | decimal:2}</td>
+        <td style="text-align:right">${week.jogs}</td>
+        <td style="text-align:right">${week.totalDistance | decimal:2}</td>
+        <td style="text-align:right">${week.totalTime | decimal:2}</td>
+        <td style="text-align:right">${week.totalDistance/week.totalTime | decimal:2}</td>
+        <td style="text-align:right">${week.totalDistance/week.jogs | decimal:2}</td>
       </tr>
 
     </table>
