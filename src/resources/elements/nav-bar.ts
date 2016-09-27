@@ -8,18 +8,14 @@ export class NavBar {
 
   @bindable router = null;
 
-  showJogs = false;
-  showUsers = false;
+  properties: UserProperties;
 
   constructor(eventAggregator) {
     eventAggregator.subscribe('user-signin',(user) => {
-      let userProperties = currentUserProperties();
-      this.showJogs = true;
-      this.showUsers = userProperties.role == 'manager' || userProperties.role == 'admin';
+      this.properties = currentUserProperties();
     });
     eventAggregator.subscribe('user-signout',(user) => {
-      this.showJogs = false;
-      this.showUsers = false;
+      this.properties = null;
     });
   }
 }

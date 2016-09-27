@@ -16,10 +16,14 @@
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="${row.isActive ? 'active' : ''}" show.bind="showJogs">
+          <li
+            class="${router.history.fragment.startsWith('/jogs') ? 'active' : ''}"
+            show.bind="properties">
             <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href="#/jogs">Jogs</a>
           </li>
-          <li class="${row.isActive ? 'active' : ''}" show.bind="showUsers">
+          <li
+            class="${router.history.fragment.startsWith('/users') ? 'active' : ''}"
+            show.bind="properties && (properties.role == 'manager' || properties.role == 'admin')">
             <a data-toggle="collapse" data-target="#bs-example-navbar-collapse-1.in" href="#/users">Users</a>
           </li>
         </ul>
