@@ -15,7 +15,6 @@ export class JogTable {
   }
 
   activate(data) {
-    console.log("JogTable.activate",data);
     this.content = data.items;
   }
 

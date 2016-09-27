@@ -81,7 +81,6 @@ export class FirebaseEntityModule extends FirebaseModule {
     let item = this.collection.getByKey(this.parameters.id);
     this.item = new this.itemClass();
     this.item.properties.forEach((key) => {
-      console.log(key,item[key]);
       this.item[key] = item[key];
     });
     return;
@@ -89,17 +88,13 @@ export class FirebaseEntityModule extends FirebaseModule {
 
   saveItem() {
     let key = this.parameters.id;
-    console.log("saveItem",this.item,key);
     if (!this.item.isValid()) {
-      console.log("Item not valid!",this.item.state);
       this.state.copy(this.item.state);
       return;
     }
 
-    console.log("[99] Saving item.",this.item,key,this.collection);
     this.collection.add(this.item,key)
     .then(() => {
-      console.log("Item saved. Rerouting.",this.saveRoute);
       this.state.setInfo("Item saved.");
       this.router.navigateToRoute(this.saveRoute);
     })
@@ -109,10 +104,8 @@ export class FirebaseEntityModule extends FirebaseModule {
   }
 
   removeItem() {
-    console.log("removeItem",this.item,this.parameters.id);
     this.collection.removeByKey(this.parameters.id)
     .then(() => {
-      console.log("Item removed.");
       this.state.setInfo("Item removed.");
       this.router.navigateToRoute(this.saveRoute);
     })
@@ -122,7 +115,6 @@ export class FirebaseEntityModule extends FirebaseModule {
   }
 
   activate(parameters,routeConfig) {
-    console.log("activate",parameters,routeConfig);
     this.parameters = parameters;
     //this.navModel = routeConfig.navModel;
     return this.refresh();
@@ -139,7 +131,6 @@ export class FirebaseCollectionModule extends FirebaseModule {
   }
 
   activate(parameters,routeConfig) {
-    console.log("activate",parameters,routeConfig);
     this.parameters = parameters;
     //this.navModel = routeConfig.navModel;
     return this.refresh();
