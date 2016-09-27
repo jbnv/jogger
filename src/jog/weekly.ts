@@ -1,6 +1,6 @@
 import {computedFrom} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {FirebaseCollectionModule, inject, AuthenticationManager, Router} from '../resources/firebase/index';
+import {FirebaseCollectionModule, inject, AuthenticationManager, Router, currentUser} from '../resources/firebase/index';
 import {Jog} from '../entities/jog';
 import {JogCollection} from '../collections/jog';
 import * as moment from 'moment';
@@ -22,6 +22,7 @@ export class JogWeekly extends FirebaseCollectionModule {
   ) {
     super(authManager,router,eventAggregator);
     this.collection = collection;
+    let uid = currentUser().uid;
 
     // Reduce and group by weeks.
     let refMoment = moment('2000-01-01');
@@ -29,6 +30,7 @@ export class JogWeekly extends FirebaseCollectionModule {
     for (var key in this.collection.items) {
       if (key == '__firebaseKey__') continue;
       let item = this.collection.items[key];
+      if (item.ownerId !== uid) continue;
       let currentMoment = moment(item.date);
       let week = currentMoment.diff(refMoment,'weeks');
       if (!reducedData[week]) {
