@@ -21,7 +21,7 @@ export class JogCollection extends ReactiveCollection {
     }
 
     let outbound =  jog.clone();
-    outbound.ownerId = user.uid;
+    outbound.ownerId = outbound.ownerId || user.uid;
     outbound.timestamp = Math.floor(Date.now() / 1000);
     return super.add(outbound,key);
   }
