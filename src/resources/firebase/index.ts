@@ -52,8 +52,7 @@ export class FirebaseModule {
 export class FirebaseEntityModule extends FirebaseModule {
   item: Entity;
   itemClass: any;
-  collection: ReactiveCollection; // collection class that handles E
-  //collectionClass: any;
+  collection: ReactiveCollection;
   addTitle = "";
   editTitle = "";
   saveRoute = "";
@@ -61,10 +60,6 @@ export class FirebaseEntityModule extends FirebaseModule {
   setEntityClass(c) {
     this.itemClass = c;
   }
-
-  // setCollectionClass(c) {
-  //   this.collectionClass = c;
-  // }
 
   reset() {
     this.item = null;
@@ -116,14 +111,12 @@ export class FirebaseEntityModule extends FirebaseModule {
 
   activate(parameters,routeConfig) {
     this.parameters = parameters;
-    //this.navModel = routeConfig.navModel;
     return this.refresh();
   }
 }
 
 export class FirebaseCollectionModule extends FirebaseModule {
-  collection: ReactiveCollection; // collection class that handles E
-  // collectionClass: any;
+  collection: ReactiveCollection;
 
   // overrideable
   refresh() {
@@ -132,7 +125,6 @@ export class FirebaseCollectionModule extends FirebaseModule {
 
   activate(parameters,routeConfig) {
     this.parameters = parameters;
-    //this.navModel = routeConfig.navModel;
     return this.refresh();
   }
 
